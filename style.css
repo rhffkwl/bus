@@ -16,6 +16,14 @@
   --광역:#e23d3d;
   --순환:#e6b000;
   --마을:#2f9e44;
+  --공항:#2e8bd8;
+  --경기:#3aaa2f;
+  --인천:#2e8bd8;
+  --심야:#3d5bab;
+  --동행:#3d5bab;
+  --한강:#2e8bd8;
+  --관광:#e23d3d;
+  --매우혼잡:#b71c1c;
   --여유:#2ea043;
   --보통:#f0a000;
   --혼잡:#e53935;
@@ -107,6 +115,15 @@ body.editing .routes{pointer-events:none;opacity:.45}
 .rno.t-광역{color:var(--광역)}
 .rno.t-순환{color:var(--순환)}
 .rno.t-마을{color:var(--마을);font-size:22px;letter-spacing:-.05em}
+.rno.t-공항{color:var(--공항)}
+.rno.t-경기{color:var(--경기)}
+.rno.t-인천{color:var(--인천)}
+.rno.t-심야{color:var(--심야)}
+.rno.t-동행{color:var(--동행)}
+.rno.t-한강{color:var(--한강)}
+.rno.t-관광{color:var(--관광)}
+.rno.long{font-size:20px;letter-spacing:-.05em}
+.rno.sm{font-size:20px;width:auto;min-width:64px;white-space:nowrap}
 .etas{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;min-width:0}
 .eta{display:flex;flex-direction:column;gap:3px;min-width:0}
 .eta b{font-size:15.5px;font-weight:700;letter-spacing:-.02em;line-height:1.2;font-variant-numeric:tabular-nums}
@@ -115,6 +132,26 @@ body.editing .routes{pointer-events:none;opacity:.45}
 .chip .c-여유{color:var(--여유);font-weight:700}
 .chip .c-보통{color:var(--보통);font-weight:700}
 .chip .c-혼잡{color:var(--혼잡);font-weight:700}
+.chip .c-매우혼잡{color:var(--매우혼잡);font-weight:700}
+.chip .c-last{color:#e53935;font-weight:700}
+.eta b.muted{color:var(--fg2);font-weight:600;font-size:14px}
+.card-err{border-top:1px solid var(--line);padding:14px 0 10px;font-size:14px;color:var(--fg2);font-weight:600;line-height:1.5}
+.card-err small{display:block;font-size:12px;font-weight:500;color:#b0b4ba}
+.empty.card-err{border:0;padding-top:48px}
+.add-bus{
+  display:flex;align-items:center;justify-content:center;gap:4px;width:100%;
+  border-top:1px solid var(--line);padding:10px 0 8px;font-size:13px;font-weight:600;color:var(--fg2);
+}
+.add-bus svg{width:15px;height:15px}
+body.editing .add-bus{display:none}
+.btn-pick{
+  flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:#f1f3f5;color:#8a8f98;
+}
+.btn-pick[aria-pressed=true]{background:var(--fg);color:#fff}
+.pick-note{padding:0 16px 10px;font-size:12px;color:#b0b4ba;background:#fff}
+.note{margin:14px 16px;padding:12px 14px;background:#f6f7f9;border-radius:12px;font-size:12.5px;line-height:1.55;color:var(--fg2)}
+.res-head{padding:14px 16px 6px;font-size:12px;font-weight:700;color:var(--fg2);background:#fff}
 .empty{
   text-align:center;color:var(--fg2);padding:48px 20px 20px;font-size:15px;line-height:1.6;
 }
@@ -154,7 +191,7 @@ body.editing .routes{pointer-events:none;opacity:.45}
 
 /* ---------- Stop detail ---------- */
 .detail-body{padding:0 0 calc(var(--sab) + 24px);background:#fff;min-height:calc(100dvh - var(--sat) - 60px)}
-.detail-dir{padding:0 16px 10px;font-size:13px;color:var(--fg2);background:#fff}
+.detail-dir{padding:12px 16px 6px;font-size:13px;color:var(--fg2);background:#fff}
 .detail-body .routes{padding:0 16px}
 .detail-body .routes li{padding:14px 0}
 
@@ -168,6 +205,10 @@ body.editing .routes{pointer-events:none;opacity:.45}
   border-bottom:1px solid var(--line);
 }
 .stop-row.hl{background:var(--hl)}
+.stop-row[data-open-stop]{cursor:pointer}
+.route-err{position:absolute;left:50%;bottom:calc(var(--sab) + 22px);transform:translateX(-50%);background:rgba(30,32,36,.9);color:#fff;font-size:13px;padding:9px 14px;border-radius:12px;z-index:5;white-space:nowrap}
+.route-view{position:relative}
+#btnRouteRefresh.spin svg{animation:spin .7s ease}
 .bus-col{position:relative;display:flex;align-items:center;justify-content:flex-end;padding:0 6px 0 8px}
 .track{position:relative}
 .track::before{
