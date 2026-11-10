@@ -4,4 +4,4 @@
 
 지금은 예시 데이터로 화면만 미리 볼 수 있고, 실제 도착 정보는 공공데이터포털 키를 받은 뒤 연결할 예정이에요.
 
-https://rhffkwl.github.io/bus/?v=1
+https://rhffkwl.github.io/bus/?v=2

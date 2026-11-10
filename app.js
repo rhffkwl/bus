@@ -1,7 +1,7 @@
 import {
   getArrivals, searchStops, getRouteStops, getBusPositions,
   getStop, DEFAULT_FAVORITES,
-} from './api.js?v=1';
+} from './api.js?v=2';
 
 /* Block page pinch-zoom / double-tap zoom (iOS ignores user-scalable=no). */
 for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) {
@@ -45,7 +45,7 @@ const ICO = {
   starOff: `<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.6l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 16l-4.8 2.5.9-5.4L4.2 9.3l5.4-.8z"/></svg>`,
   refresh: `<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.2-5.5"/><path d="M20 4v5h-5"/></svg>`,
   handle: `<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><circle cx="8" cy="7" r="1.5"/><circle cx="16" cy="7" r="1.5"/><circle cx="8" cy="12" r="1.5"/><circle cx="16" cy="12" r="1.5"/><circle cx="8" cy="17" r="1.5"/><circle cx="16" cy="17" r="1.5"/></svg>`,
-  bus: `<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M4 11h16" stroke="#2b6de5" stroke-width="1.2"/><rect x="6.2" y="6.2" width="4.4" height="3.2" rx=".6" fill="#2b6de5"/><rect x="13.4" y="6.2" width="4.4" height="3.2" rx=".6" fill="#2b6de5"/><circle cx="7.5" cy="17.2" r="1.7"/><circle cx="16.5" cy="17.2" r="1.7"/></svg>`,
+  bus: `<svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M4 11h16" stroke="currentColor" stroke-width="1.2"/><rect x="6.2" y="6.2" width="4.4" height="3.2" rx=".6" fill="currentColor"/><rect x="13.4" y="6.2" width="4.4" height="3.2" rx=".6" fill="currentColor"/><circle cx="7.5" cy="17.2" r="1.7"/><circle cx="16.5" cy="17.2" r="1.7"/></svg>`,
 };
 
 let favorites = loadFavs();
@@ -398,7 +398,7 @@ async function renderRoute(routeId, fromId) {
   const fav = favStop && isFav(favStop);
   const color = `var(--${route.type})`;
   $('#app').innerHTML = `
-    <section class="route-view" style="--route-color:${color}">
+    <section class="route-view" style="--bus-color:${color}">
       <header class="topbar solid">
         <button class="iconbtn" id="btnBack" aria-label="뒤로">${ICO.back}</button>
         <div class="title-wrap">
