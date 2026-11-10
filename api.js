@@ -29,20 +29,61 @@ async function fetchJson(path, params = {}) {
 const KNOWN = ['간선', '지선', '광역', '순환', '마을', '공항', '경기', '인천', '심야', '동행', '한강', '관광'];
 export function typeKey(t) { return KNOWN.includes(t) ? t : '간선'; }
 
-/* 즐겨찾기 기본값: 정류장 + 고른 노선 */
-export const DEFAULT_FAVORITES = [
+/* 즐겨찾기 기본값: 정류장 + 고른 노선.
+   FAV_SEEDS 는 버전별로 나중에 추가된 항목. 이미 앱을 쓰던 사람에게는
+   빠진 정류장·노선만 넣고, 직접 지운 예전 기본값은 다시 넣지 않아요. */
+const R202 = { id: '100100039', number: '202', type: '간선' };
+const R402 = { id: '100100063', number: '402', type: '간선' };
+const R405 = { id: '100100597', number: '405', type: '간선' };
+
+const FAV_V3 = [
   {
     arsId: '03204', name: '후암동종점.용산중학교', direction: '용산중고.삼광초등학교 방면',
-    routes: [{ id: '100100039', number: '202', type: '간선' }],
+    routes: [R202],
   },
   {
     arsId: '02005', name: '서울역버스환승센터(5번승강장)', direction: '숭례문.서울역4번출구 방면',
-    routes: [{ id: '100100063', number: '402', type: '간선' }],
+    routes: [R402],
   },
   {
     arsId: '02004', name: '서울역버스환승센터(4번승강장)', direction: '갈월동 방면',
-    routes: [{ id: '100100039', number: '202', type: '간선' }],
+    routes: [R202],
   },
+];
+
+export const FAV_SEED_VERSION = 4;
+export const FAV_SEEDS = {
+  4: [
+    {
+      arsId: '03170', name: '후암약수터', direction: '용산2가동주민센터.보성여중고 방면',
+      routes: [R402],
+    },
+    {
+      arsId: '02140', name: '롯데백화점', direction: '북창동.남대문시장 방면',
+      routes: [R202, R405],
+    },
+    {
+      arsId: '02132', name: '시청역8번출구', direction: '염천교 방면',
+      routes: [R402],
+    },
+    {
+      arsId: '02123', name: '숭례문.서울역4번출구', direction: '북창동.소공동주민센터건너 방면',
+      routes: [R402, R405],
+    },
+    {
+      arsId: '02125', name: '숭례문남산방향', direction: '남산공원.구힐튼호텔 방면',
+      routes: [R402, R405],
+    },
+    {
+      arsId: '03169', name: '후암약수터', direction: '남산도서관.용산도서관 방면',
+      routes: [R402, R405],
+    },
+  ],
+};
+
+export const DEFAULT_FAVORITES = [
+  ...FAV_V3,
+  ...Object.keys(FAV_SEEDS).sort((a, b) => a - b).flatMap((v) => FAV_SEEDS[v]),
 ];
 
 /* 정류장 도착 정보.

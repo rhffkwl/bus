@@ -1,7 +1,7 @@
 import {
   getArrivals, searchStops, searchRoutes, getRouteStops, getBusPositions,
-  DEFAULT_FAVORITES, typeKey,
-} from './api.js?v=3';
+  DEFAULT_FAVORITES, FAV_SEED_VERSION, FAV_SEEDS, typeKey,
+} from './api.js?v=4';
 
 /* Block page pinch-zoom / double-tap zoom (iOS ignores user-scalable=no). */
 for (const ev of ['gesturestart', 'gesturechange', 'gestureend']) {
@@ -26,6 +26,7 @@ document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: fals
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const LS_KEY = 'bus:favorites:v3';
+const SEED_KEY = 'bus:favorites:seed';
 const REFRESH_MS = 20000;
 const FAIL_MSG = '실시간 정보를 불러오지 못했어요';
 
@@ -63,13 +64,46 @@ let searchSeq = 0;
 let routeState = null; // { routeId, from, stops, route }
 
 /* ---------- favorites: [{ arsId, name, direction, routes:[{id,number,type}] }] ---------- */
-function loadFavs() {
-  const v = LS.get(LS_KEY, null);
-  if (Array.isArray(v)) {
-    return v.filter((x) => x && /^\d{5}$/.test(x.arsId))
-      .map((x) => ({ ...x, routes: Array.isArray(x.routes) ? x.routes : [] }));
+function cloneFav(x) {
+  return {
+    arsId: x.arsId,
+    name: x.name || '',
+    direction: x.direction || '',
+    routes: Array.isArray(x.routes) ? x.routes.map((r) => ({ id: r.id, number: r.number, type: r.type })) : [],
+  };
+}
+function mergeSeed(list, adds) {
+  const out = list.map(cloneFav);
+  for (const s of adds) {
+    const f = out.find((x) => x.arsId === s.arsId);
+    if (!f) { out.push(cloneFav(s)); continue; }
+    if (!f.name && s.name) f.name = s.name;
+    if (!f.direction && s.direction) f.direction = s.direction;
+    for (const r of s.routes || []) {
+      if (!f.routes.some((x) => x.id === r.id)) f.routes.push({ id: r.id, number: r.number, type: r.type });
+    }
   }
-  return JSON.parse(JSON.stringify(DEFAULT_FAVORITES));
+  return out;
+}
+function loadFavs() {
+  const raw = LS.get(LS_KEY, null);
+  if (!Array.isArray(raw)) {
+    const list = DEFAULT_FAVORITES.map(cloneFav);
+    LS.set(LS_KEY, list);
+    LS.set(SEED_KEY, FAV_SEED_VERSION);
+    return list;
+  }
+  let list = raw.filter((x) => x && /^\d{5}$/.test(x.arsId)).map(cloneFav);
+  const prev = Number(LS.get(SEED_KEY, 3));
+  const from = Number.isFinite(prev) ? prev : 3;
+  if (from < FAV_SEED_VERSION) {
+    for (let v = from + 1; v <= FAV_SEED_VERSION; v++) {
+      if (FAV_SEEDS[v]) list = mergeSeed(list, FAV_SEEDS[v]);
+    }
+    LS.set(LS_KEY, list);
+    LS.set(SEED_KEY, FAV_SEED_VERSION);
+  }
+  return list;
 }
 function saveFavs() { LS.set(LS_KEY, favorites); }
 function favOf(arsId) { return favorites.find((f) => f.arsId === arsId); }

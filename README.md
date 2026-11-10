@@ -4,4 +4,4 @@
 
 서울시 버스 API(공공데이터포털)의 실시간 도착 정보와 버스 위치를 보여 줘요. 인증키는 Cloudflare 워커(`worker/`, https://bus-proxy.rhffkwl.workers.dev)에만 있고, 이 사이트에서만 호출할 수 있어요.
 
-https://rhffkwl.github.io/bus/?v=3
+https://rhffkwl.github.io/bus/?v=4
